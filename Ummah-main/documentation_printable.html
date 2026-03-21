@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ummah Cooperative Documentation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Outfit:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-green: #1b4332;
+            --gold: #d4af37;
+            --text-dark: #2d3436;
+            --bg-light: #ffffff;
+            --border-color: #e0e0e0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background-color: #f4f7f6;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            background: var(--bg-light);
+            padding: 60px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            border-radius: 8px;
+        }
+
+        header {
+            text-align: center;
+            border-bottom: 3px solid var(--gold);
+            padding-bottom: 20px;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-family: 'Outfit', sans-serif;
+            color: var(--primary-green);
+            font-size: 2.5rem;
+            margin: 0;
+        }
+
+        h2 {
+            font-family: 'Outfit', sans-serif;
+            color: var(--primary-green);
+            border-left: 5px solid var(--gold);
+            padding-left: 15px;
+            margin-top: 40px;
+        }
+
+        h3 {
+            color: var(--primary-green);
+            margin-top: 25px;
+        }
+
+        p, li {
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+        }
+
+        .alert {
+            background: #fff9db;
+            border-left: 5px solid var(--gold);
+            padding: 20px;
+            margin: 20px 0;
+            font-style: italic;
+        }
+
+        .footer {
+            margin-top: 60px;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #777;
+            border-top: 1px solid var(--border-color);
+            padding-top: 20px;
+        }
+
+        @media print {
+            body { background: none; }
+            .container { 
+                margin: 0; 
+                box-shadow: none; 
+                padding: 20px;
+                max-width: 100%;
+            }
+            .no-print { display: none; }
+        }
+
+        .print-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--primary-green);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+
+<button class="print-btn no-print" onclick="window.print()">Download as PDF / Print</button>
+
+<div class="container">
+    <header>
+        <h1>Ummah Cooperative Digital Secretariate</h1>
+        <p>Official System Documentation & Resource Guide</p>
+    </header>
+
+    <section>
+        <h2>🌟 Introduction</h2>
+        <p>Think of this application as a <strong>Digital Secretariate</strong>. Just as a physical office has files, clerks, and a manager, this system organizes all cooperative activities—savings, loans, and accounting—into a neat, digital space.</p>
+    </section>
+
+    <section>
+        <h2>🏗️ 1. How the System Works (The "House" Analogy)</h2>
+        <p>To understand the technology (Laravel) behind this, imagine we are building a house:</p>
+        <ul>
+            <li><strong>The Blueprint (Models):</strong> These are like the official forms (Member profiles, Loan requests). They define what information we keep.</li>
+            <li><strong>The Clerk (Controllers):</strong> These are the workers. When you click a button, the Clerk takes your request, checks the rules, and updates the files.</li>
+            <li><strong>The Office Rooms (Views):</strong> This is what you see on your screen. The dashboard and application pages are the "rooms" where you interact with the Clerk.</li>
+            <li><strong>The Receptionist (Routes):</strong> This is the person at the front door who directs you. If you say "I want to see my savings," the Receptionist sends you to the Savings Room.</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>🏦 2. Key Features for Members</h2>
+        <h3>📝 Joining the Cooperative</h3>
+        <p>The registration is a step-by-step process: personal details, next of kin, and final review. Once submitted, a Staff member must approve your application before you can start saving.</p>
+
+        <h3>💰 Savings & Contributions</h3>
+        <p><strong>Personal Savings:</strong> This is your private wallet within the cooperative. You can deposit and withdraw as needed.</p>
+        <p><strong>Contributions:</strong> Fixed monthly amounts that everyone pays. This is the collective "fuel" that allows the cooperative to lend and grow.</p>
+
+        <h3>💸 Loans</h3>
+        <p>Applying for a loan is a secure process involving a formal request, two guarantors who vouch for you, and a review by the Loan Committee to ensure safety and fairness.</p>
+    </section>
+
+    <section>
+        <h2>⚙️ 3. The "Brain" (The Math & Logic)</h2>
+        <p>The system follows strict predefined rules to ensure transparency:</p>
+        
+        <h3>📈 Interest Rates</h3>
+        <p>The computer automatically calculates interest based on the loan's purpose:</p>
+        <ul>
+            <li><strong>Emergency & Essential Goods:</strong> Attracts a <strong>6% interest rate</strong>.</li>
+            <li><strong>Business or Other Needs:</strong> Attracts a <strong>10% interest rate</strong>.</li>
+        </ul>
+
+        <h3>🧮 Balance Calculations</h3>
+        <div class="alert">
+            Total Deposits - Total Withdrawals = Current Balance.
+        </div>
+        <p>The system calculates balances from the full transaction history every time. This ensures the history remains the absolute truth even if a single record is edited.</p>
+    </section>
+
+    <section>
+        <h2>📖 4. The Admin Control Room</h2>
+        <h3>📓 The Cashbook</h3>
+        <p>This is the <strong>Master Ledger</strong>. It tracks every single Naira that enters or leaves the cooperative, including staff expenses and utility costs.</p>
+        
+        <h3>🛡️ Security & Roles</h3>
+        <p>The system uses "Role-Based Access." Members can only see their own data, Staff handle operations, and Admins oversee the entire organization's health.</p>
+    </section>
+
+    <div class="footer">
+        <p>&copy; 2026 Ummah Cooperative Digital Secretariate. Built with Laravel for Excellence.</p>
+    </div>
+</div>
+
+</body>
+</html>
