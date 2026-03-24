@@ -248,6 +248,30 @@
                         </div>
                     </div>
 
+                    <!-- Asset Photos (NEW) -->
+                    @php
+                        $assetPhotos = $loan->documents->where('document_type', 'Asset Image');
+                    @endphp
+
+                    @if($assetPhotos->count() > 0)
+                        <div class="bg-[#0B1A14] overflow-hidden shadow-2xl rounded-[3rem] border border-emerald-900/50 p-10 md:p-12">
+                            <h3 class="text-2xl font-black text-white flex items-center gap-4 uppercase tracking-tight mb-8">
+                                <i class="fas fa-camera text-gold text-xl"></i>
+                                Asset Photos
+                            </h3>
+                            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                                @foreach($assetPhotos as $photo)
+                                    <div class="relative aspect-square rounded-2xl overflow-hidden border border-emerald-900/50 group">
+                                        <img src="{{ Storage::url($photo->file_path) }}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt="Asset Photo">
+                                        <a href="{{ Storage::url($photo->file_path) }}" target="_blank" class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white text-xl">
+                                            <i class="fas fa-expand-alt"></i>
+                                        </a>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    @endif
+
                     <!-- Repayment Statement -->
                     <div class="bg-[#0B1A14] overflow-hidden shadow-2xl rounded-[3rem] border border-emerald-900/50">
                         <div class="p-10 md:p-12">

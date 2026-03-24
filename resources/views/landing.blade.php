@@ -503,7 +503,7 @@
                     
                     <!-- Decorative Background Logo (Larger Subtle Watermark) -->
                     <div class="absolute -left-10 top-0 opacity-[0.05] -z-10">
-                        <img src="{{ asset('images/logo-transparent.png') }}" alt="" class="w-64 h-64 object-contain grayscale">
+                        <img src="{{ asset('images/ummah-logo.png') }}" alt="" class="w-64 h-64 object-contain grayscale">
                     </div>
 
                     <!-- Central Logo Display -->
@@ -587,7 +587,7 @@
                 <!-- Vision -->
                 <div class="bg-white overflow-hidden rounded-[32px] shadow-xl border border-gray-100 text-center group hover:border-gold/50 transition-all duration-500">
                     <div class="h-72 overflow-hidden relative">
-                        <img src="{{ asset('images/admins/our vision.jpeg') }}" alt="Vision" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                        <img src="{{ asset('images/admins/our_vision.jpeg') }}" alt="Vision" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center">
                             <i class="fa-solid fa-eye text-white text-5xl"></i>
                         </div>
@@ -604,7 +604,7 @@
                 <!-- Mission -->
                 <div class="bg-white overflow-hidden rounded-[32px] shadow-xl border border-gray-100 text-center group hover:border-army-green/50 transition-all duration-500">
                     <div class="h-72 overflow-hidden relative">
-                        <img src="{{ asset('images/admins/OUR MISSION.jpeg') }}" alt="Mission" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                        <img src="{{ asset('images/admins/our_mission.jpeg') }}" alt="Mission" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center">
                             <i class="fa-solid fa-bullseye text-white text-5xl"></i>
                         </div>
@@ -621,7 +621,7 @@
                 <!-- Values -->
                 <div class="bg-white overflow-hidden rounded-[32px] shadow-xl border border-gray-100 group hover:border-gold/50 transition-all duration-500">
                     <div class="h-72 overflow-hidden relative">
-                        <img src="{{ asset('images/admins/Our Value.jpeg') }}" alt="Values" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                        <img src="{{ asset('images/admins/our_value.jpeg') }}" alt="Values" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center">
                             <i class="fa-solid fa-gem text-white text-5xl"></i>
                         </div>
@@ -691,7 +691,7 @@
 
                         <div class="bg-white rounded-2xl shadow-lg overflow-hidden border-b-4 border-army-green card-hover group">
                             <div class="h-80 overflow-hidden bg-gray-100 relative">
-                                <img src="{{ asset('images/admins/Vice chairman.jpeg') }}" alt="Vice Chairman" class="w-full h-full object-cover object-top group-hover:scale-110 transition-transform duration-500">
+                                <img src="{{ asset('images/admins/Vice_chairman.jpeg') }}" alt="Vice Chairman" class="w-full h-full object-cover object-top group-hover:scale-110 transition-transform duration-500">
                             </div>
                             <div class="p-8 text-center">
                                 <h3 class="text-2xl font-bold text-army-green mb-1">Pharm. Ahmed Usman Tanze</h3>
@@ -718,7 +718,7 @@
                     <div class="contents">
                         <div class="bg-white rounded-2xl shadow-lg overflow-hidden border-b-4 border-gold card-hover group">
                             <div class="h-80 overflow-hidden bg-gray-100 relative">
-                                <img src="{{ asset('images/admins/Financial Secretary.jpeg') }}" alt="Financial Secretary" class="w-full h-full object-cover object-top group-hover:scale-110 transition-transform duration-500">
+                                <img src="{{ asset('images/admins/Financial_Secretary.jpeg') }}" alt="Financial Secretary" class="w-full h-full object-cover object-top group-hover:scale-110 transition-transform duration-500">
                             </div>
                             <div class="p-8 text-center">
                                 <h3 class="text-2xl font-bold text-army-green mb-1">Dr. Liman Alhaji Mohammed (ACA)</h3>
@@ -740,7 +740,7 @@
 
                         <div class="bg-white rounded-2xl shadow-lg overflow-hidden border-b-4 border-gold card-hover group">
                             <div class="h-80 overflow-hidden bg-gray-100 relative">
-                                <img src="{{ asset('images/admins/Dr Yusuf Bawa.jpeg') }}" alt="Ex-Officio" class="w-full h-full object-cover object-top group-hover:scale-110 transition-transform duration-500">
+                                <img src="{{ asset('images/admins/Dr_Yusuf_Bawa.jpeg') }}" alt="Ex-Officio" class="w-full h-full object-cover object-top group-hover:scale-110 transition-transform duration-500">
                             </div>
                             <div class="p-8 text-center">
                                 <h3 class="text-2xl font-bold text-army-green mb-1">Dr. Yusuf Bawa</h3>
@@ -778,7 +778,7 @@
 
                         <div class="bg-white rounded-2xl shadow-lg overflow-hidden border-b-4 border-gold card-hover group">
                             <div class="h-80 overflow-hidden bg-gray-100 relative">
-                                <img src="{{ asset('images/admins/Ex-Officio Dr. Abubakar Tafida.jpeg') }}" alt="Ex-Officio" class="w-full h-full object-cover object-top group-hover:scale-110 transition-transform duration-500">
+                                <img src="{{ asset('images/admins/Ex-Officio_Dr._Abubakar_Tafida.jpeg') }}" alt="Ex-Officio" class="w-full h-full object-cover object-top group-hover:scale-110 transition-transform duration-500">
                             </div>
                             <div class="p-8 text-center">
                                 <h3 class="text-2xl font-bold text-army-green mb-1">Dr. Abubakar Tafida</h3>
@@ -868,7 +868,7 @@
                 <!-- Member 1 -->
                 <div class="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2">
                     <div class="aspect-square overflow-hidden bg-gray-100">
-                        <img src="{{ asset('images/members/member 1.jpeg') }}" alt="Member 1" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                        <img src="{{ asset('images/members/member_1.jpeg') }}" alt="Member 1" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy">
                     </div>
                     <div class="absolute inset-0 bg-gradient-to-t from-army-green/90 via-army-green/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end justify-center pb-6">
                         <div class="text-white text-center transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
@@ -880,7 +880,7 @@
                 <!-- Member 2 -->
                 <div class="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2">
                     <div class="aspect-square overflow-hidden bg-gray-100">
-                        <img src="{{ asset('images/members/member 2.jpeg') }}" alt="Member 2" class="w-full h-full object-cover object-top group-hover:scale-110 transition-transform duration-700">
+                        <img src="{{ asset('images/members/member_2.jpeg') }}" alt="Member 2" class="w-full h-full object-cover object-top group-hover:scale-110 transition-transform duration-700" loading="lazy">
                     </div>
                     <div class="absolute inset-0 bg-gradient-to-t from-army-green/90 via-army-green/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end justify-center pb-6">
                         <div class="text-white text-center transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
@@ -892,7 +892,7 @@
                 <!-- Member 3 -->
                 <div class="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2">
                     <div class="aspect-square overflow-hidden bg-gray-100">
-                        <img src="{{ asset('images/members/member 3.jpeg') }}" alt="Member 3" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                        <img src="{{ asset('images/members/member_3.jpeg') }}" alt="Member 3" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy">
                     </div>
                     <div class="absolute inset-0 bg-gradient-to-t from-army-green/90 via-army-green/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end justify-center pb-6">
                         <div class="text-white text-center transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
@@ -904,7 +904,7 @@
                 <!-- Member 4 -->
                 <div class="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2">
                     <div class="aspect-square overflow-hidden bg-gray-100">
-                        <img src="{{ asset('images/members/member 4.jpeg') }}" alt="Member 4" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                        <img src="{{ asset('images/members/member_4.jpeg') }}" alt="Member 4" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy">
                     </div>
                     <div class="absolute inset-0 bg-gradient-to-t from-army-green/90 via-army-green/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end justify-center pb-6">
                         <div class="text-white text-center transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
@@ -916,7 +916,7 @@
                 <!-- Member 5 -->
                 <div class="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2">
                     <div class="aspect-square overflow-hidden bg-gray-100">
-                        <img src="{{ asset('images/members/member 5.jpeg') }}" alt="Member 5" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                        <img src="{{ asset('images/members/member_5.jpeg') }}" alt="Member 5" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy">
                     </div>
                     <div class="absolute inset-0 bg-gradient-to-t from-army-green/90 via-army-green/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end justify-center pb-6">
                         <div class="text-white text-center transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
@@ -928,7 +928,7 @@
                 <!-- Member 6 -->
                 <div class="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2">
                     <div class="aspect-square overflow-hidden bg-gray-100">
-                        <img src="{{ asset('images/members/member 6.jpeg') }}" alt="Member 6" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                        <img src="{{ asset('images/members/member_6.jpeg') }}" alt="Member 6" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy">
                     </div>
                     <div class="absolute inset-0 bg-gradient-to-t from-army-green/90 via-army-green/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end justify-center pb-6">
                         <div class="text-white text-center transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
@@ -940,7 +940,7 @@
                 <!-- Member 7 -->
                 <div class="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2">
                     <div class="aspect-square overflow-hidden bg-gray-100">
-                        <img src="{{ asset('images/members/member 7.jpeg') }}" alt="Member 7" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                        <img src="{{ asset('images/members/member_7.jpeg') }}" alt="Member 7" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy">
                     </div>
                     <div class="absolute inset-0 bg-gradient-to-t from-army-green/90 via-army-green/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end justify-center pb-6">
                         <div class="text-white text-center transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
@@ -952,7 +952,7 @@
                 <!-- Member 8 -->
                 <div class="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2">
                     <div class="aspect-square overflow-hidden bg-gray-100">
-                        <img src="{{ asset('images/members/member 8.jpeg') }}" alt="Member 8" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                        <img src="{{ asset('images/members/member_8.jpeg') }}" alt="Member 8" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy">
                     </div>
                     <div class="absolute inset-0 bg-gradient-to-t from-army-green/90 via-army-green/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end justify-center pb-6">
                         <div class="text-white text-center transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
@@ -964,7 +964,7 @@
                 <!-- Member 9 -->
                 <div class="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2">
                     <div class="aspect-square overflow-hidden bg-gray-100">
-                        <img src="{{ asset('images/members/member 9.jpeg') }}" alt="Member 9" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                        <img src="{{ asset('images/members/member_9.jpeg') }}" alt="Member 9" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy">
                     </div>
                     <div class="absolute inset-0 bg-gradient-to-t from-army-green/90 via-army-green/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end justify-center pb-6">
                         <div class="text-white text-center transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
@@ -976,7 +976,7 @@
                 <!-- Member 10 -->
                 <div class="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2">
                     <div class="aspect-square overflow-hidden bg-gray-100">
-                        <img src="{{ asset('images/members/member 10.jpeg') }}" alt="Member 10" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                        <img src="{{ asset('images/members/member_10.jpeg') }}" alt="Member 10" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy">
                     </div>
                     <div class="absolute inset-0 bg-gradient-to-t from-army-green/90 via-army-green/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end justify-center pb-6">
                         <div class="text-white text-center transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">

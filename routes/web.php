@@ -149,6 +149,8 @@ Route::middleware(['staff'])->prefix('admin')->name('admin.')->group(function ()
         Route::post('/loans/{loan}/approve', [App\Http\Controllers\AdminLoanController::class, 'approve'])->name('loans.approve');
         Route::post('/loans/{loan}/reject', [App\Http\Controllers\AdminLoanController::class, 'reject'])->name('loans.reject');
         Route::put('/loans/{loan}/update-items', [App\Http\Controllers\AdminLoanController::class, 'updateItems'])->name('loans.update_items');
+        Route::post('/loans/{loan}/upload-assets', [App\Http\Controllers\AdminLoanController::class, 'uploadAssetImages'])->name('loans.upload_assets');
+        Route::delete('/loan-documents/{document}/asset-image', [App\Http\Controllers\AdminLoanController::class, 'deleteAssetImage'])->name('loans.delete_asset_image');
         
         // Only admins can perform the final disbursement
         Route::post('/loans/{loan}/disburse', [App\Http\Controllers\AdminLoanController::class, 'disburse'])

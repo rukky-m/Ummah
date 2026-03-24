@@ -60,17 +60,15 @@ class DashboardController extends Controller
             $data['closing_balance'] = $data['opening_balance'] + $data['monthly_income'] - $data['monthly_expense'];
             $data['recent_transactions'] = CashbookTransaction::latest()->take(5)->get();
 
-            // Global Monthly Activity Summary (Contributions)
+            // Global Monthly Activity Summary (Contributions) - Optimized with SQL grouping
             $globalMonthlySummary = Saving::where('category', 'Contribution')
                 ->where('type', 'deposit')
                 ->where('status', 'approved')
-                ->get()
-                ->groupBy(function($date) {
-                    return Carbon::parse($date->transaction_date)->format('F Y');
-                })
-                ->map(function ($row) {
-                    return $row->sum('amount');
-                })->sortKeysDesc()->take(6);
+                ->selectRaw('DATE_FORMAT(transaction_date, "%M %Y") as month_name, SUM(amount) as total_amount, MAX(transaction_date) as latest_date')
+                ->groupBy('month_name')
+                ->orderBy('latest_date', 'desc')
+                ->take(6)
+                ->pluck('total_amount', 'month_name');
 
             return view('dashboard', compact('data', 'globalMonthlySummary', 'announcements'));
         }
@@ -162,13 +160,11 @@ class DashboardController extends Controller
             ->where('category', 'Contribution')
             ->where('type', 'deposit')
             ->where('status', 'approved')
-            ->get()
-            ->groupBy(function($date) {
-                return Carbon::parse($date->transaction_date)->format('F Y');
-            })
-            ->map(function ($row) {
-                return $row->sum('amount');
-            })->sortKeysDesc()->take(6);
+            ->selectRaw('DATE_FORMAT(transaction_date, "%M %Y") as month_name, SUM(amount) as total_amount, MAX(transaction_date) as latest_date')
+            ->groupBy('month_name')
+            ->orderBy('latest_date', 'desc')
+            ->take(6)
+            ->pluck('total_amount', 'month_name');
 
         $data = [
             'my_savings' => $this->financeService->getMemberSavingsBalance($member),
@@ -201,32 +197,39 @@ class DashboardController extends Controller
             6 => ['title' => 'Treasurer Action', 'order' => 5, 'icon' => 'fa-coins'],
         ];
 
+        // Pre-fetch all admins to avoid N+1 in loop
+        $admins = \App\Models\User::where('role', 'admin')->get()->groupBy('approval_order');
+        
+        // Group Loan counts by stage to avoid N+1
+        $loanCountsByStage = Loan::whereIn('status', ['pending', 'approved'])
+            ->selectRaw('stage, status, COUNT(*) as count', [])
+            ->groupBy('stage', 'status')
+            ->get()
+            ->groupBy('stage');
+
+        // Group Approval counts by stage to avoid N+1
+        $committeeStatsByStage = \App\Models\LoanCommitteeApproval::selectRaw('stage, status, COUNT(*) as count', [])
+            ->groupBy('stage', 'status')
+            ->get()
+            ->groupBy('stage');
+
         $stats = [];
         foreach ($stageConfigs as $stageNum => $config) {
-            $admin = \App\Models\User::where('role', 'admin')
-                ->where('approval_order', $config['order'])
-                ->first();
+            $admin = isset($admins[$config['order']]) ? $admins[$config['order']]->first() : null;
 
             // Loans currently at this stage
-            $waitingCount = Loan::where('stage', $stageNum)
-                ->where(function($q) use ($stageNum) {
-                    if ($stageNum == 6) {
-                        $q->where('status', 'approved');
-                    } else {
-                        $q->where('status', 'pending');
-                    }
-                })
-                ->count();
+            $stageLoans = $loanCountsByStage->get($stageNum, collect());
+            $waitingCount = 0;
+            if ($stageNum == 6) {
+                $waitingCount = $stageLoans->where('status', 'approved')->first()->count ?? 0;
+            } else {
+                $waitingCount = $stageLoans->where('status', 'pending')->first()->count ?? 0;
+            }
 
-            // Historic approvals at this stage
-            $approvedCount = \App\Models\LoanCommitteeApproval::where('stage', $stageNum)
-                ->where('status', 'approved')
-                ->count();
-
-            // Historic rejections at this stage
-            $rejectedCount = \App\Models\LoanCommitteeApproval::where('stage', $stageNum)
-                ->where('status', 'rejected')
-                ->count();
+            // Historic approvals/rejections at this stage
+            $stageApprovals = $committeeStatsByStage->get($stageNum, collect());
+            $approvedCount = $stageApprovals->where('status', 'approved')->first()->count ?? 0;
+            $rejectedCount = $stageApprovals->where('status', 'rejected')->first()->count ?? 0;
 
             $stats[] = [
                 'stage' => $stageNum,

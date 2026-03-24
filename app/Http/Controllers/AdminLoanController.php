@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Loan;
 use App\Models\LoanCommitteeApproval;
+use App\Models\LoanDocument;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class AdminLoanController extends Controller
 {
@@ -325,6 +327,47 @@ class AdminLoanController extends Controller
         ]);
 
         return back()->with('success', 'Loan items and amount updated successfully.');
+    }
+    public function uploadAssetImages(Request $request, Loan $loan)
+    {
+        $request->validate([
+            'images' => 'required|array',
+            'images.*' => 'image|mimes:jpeg,png,jpg|max:5120',
+        ]);
+
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $image) {
+                // Generate a cleaner filename or use storage's default
+                $path = $image->store('loans/assets', 'public');
+                
+                LoanDocument::create([
+                    'loan_id' => $loan->id,
+                    'document_type' => 'Asset Image',
+                    'file_path' => $path,
+                    'original_name' => $image->getClientOriginalName(),
+                ]);
+            }
+        }
+
+        return back()->with('success', 'Asset images uploaded successfully.');
+    }
+
+    public function deleteAssetImage(LoanDocument $document)
+    {
+        // Security check: ensure the document is an asset image
+        if ($document->document_type !== 'Asset Image') {
+            return back()->with('error', 'Cannot delete this document type.');
+        }
+
+        // Delete from storage
+        if (Storage::disk('public')->exists($document->file_path)) {
+            Storage::disk('public')->delete($document->file_path);
+        }
+
+        // Delete from DB
+        $document->delete();
+
+        return back()->with('success', 'Asset image deleted.');
     }
 }
 

@@ -177,7 +177,7 @@
                     <div class="bg-[#0E211A] overflow-hidden shadow-[0_0_20px_rgba(16,185,129,0.05)] border border-emerald-900/50 sm:rounded-3xl p-8">
                          <h3 class="font-bold text-lg text-white border-b border-emerald-900/30 pb-4 mb-6 tracking-tight flex items-center gap-2"><i class="fas fa-folder-open text-emerald-500/70"></i> DOCUMENTS</h3>
                          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-                             @foreach($loan->documents as $doc)
+                             @forelse($loan->documents->where('document_type', '!=', 'Asset Image') as $doc)
                                 <a href="{{ Storage::url($doc->file_path) }}" target="_blank" class="group flex flex-col items-center justify-center gap-3 p-6 bg-[#0B1A14] border border-emerald-900/50 rounded-2xl hover:bg-emerald-900/20 hover:border-emerald-500/50 transition-all text-center">
                                     <div class="w-12 h-12 rounded-xl bg-[#0E211A] border border-emerald-900/50 flex items-center justify-center text-2xl text-emerald-400 group-hover:scale-110 group-hover:bg-gold/10 group-hover:text-gold group-hover:border-gold/30 transition-all">
                                         <i class="fas fa-file-pdf"></i>
@@ -187,7 +187,64 @@
                                         <div class="text-[10px] font-black uppercase tracking-widest text-emerald-600/70 group-hover:text-gold transition-colors">View / Download</div>
                                     </div>
                                 </a>
-                             @endforeach
+                             @empty
+                                <div class="col-span-full py-8 text-center bg-[#0B1A14] rounded-2xl border border-dashed border-emerald-900/50">
+                                    <p class="text-[10px] font-black uppercase tracking-widest text-emerald-600/50">No standard documents uploaded</p>
+                                </div>
+                             @endforelse
+                         </div>
+                    </div>
+
+                    <!-- Asset Photos (NEW) -->
+                    <div class="bg-[#0E211A] overflow-hidden shadow-[0_0_20px_rgba(16,185,129,0.05)] border border-emerald-900/50 sm:rounded-3xl p-8">
+                         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b border-emerald-900/30 pb-4 mb-6 gap-4">
+                            <h3 class="font-bold text-lg text-white tracking-tight flex items-center gap-2"><i class="fas fa-camera text-emerald-500/70"></i> ASSET PHOTOS</h3>
+                            
+                            @if($loan->status !== 'rejected')
+                                <form action="{{ route('admin.loans.upload_assets', $loan) }}" method="POST" enctype="multipart/form-data" class="flex items-center gap-2 w-full sm:w-auto">
+                                    @csrf
+                                    <label class="cursor-pointer bg-[#0B1A14] border border-emerald-900/50 text-emerald-400 hover:bg-emerald-900/30 px-4 py-2 rounded-lg transition-all text-[10px] font-black uppercase tracking-widest flex items-center gap-2 whitespace-nowrap">
+                                        <i class="fas fa-plus-circle"></i> Add Photos
+                                        <input type="file" name="images[]" multiple accept="image/*" class="hidden" onchange="this.form.submit()">
+                                    </label>
+                                </form>
+                            @endif
+                         </div>
+
+                         @php
+                            $assetPhotos = $loan->documents->where('document_type', 'Asset Image');
+                         @endphp
+
+                         <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                             @forelse($assetPhotos as $photo)
+                                <div class="relative aspect-square group overflow-hidden rounded-2xl border border-emerald-900/50 bg-[#0B1A14]">
+                                    <img src="{{ Storage::url($photo->file_path) }}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" alt="Asset Photo">
+                                    
+                                    <!-- Overlay Actions -->
+                                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-3 gap-2">
+                                        <div class="flex justify-between items-center bg-[#0B1A14]/80 backdrop-blur-md p-2 rounded-xl border border-emerald-500/20">
+                                            <a href="{{ Storage::url($photo->file_path) }}" target="_blank" class="text-emerald-400 hover:text-white transition-colors">
+                                                <i class="fas fa-expand-alt"></i>
+                                            </a>
+                                            <form action="{{ route('admin.loans.delete_asset_image', $photo) }}" method="POST" onsubmit="return confirm('Delete this asset photo?')">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="text-rose-500 hover:text-rose-400 transition-colors">
+                                                    <i class="fas fa-trash-alt"></i>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                             @empty
+                                <div class="col-span-full py-12 text-center bg-[#0B1A14] rounded-2xl border border-dashed border-emerald-900/50">
+                                    <div class="w-16 h-16 rounded-full bg-emerald-900/10 border border-emerald-500/10 flex items-center justify-center text-emerald-700/30 text-2xl mx-auto mb-4">
+                                        <i class="fas fa-images"></i>
+                                    </div>
+                                    <p class="text-[10px] font-black uppercase tracking-widest text-emerald-600/50">No asset photos uploaded yet</p>
+                                    <p class="text-[9px] text-emerald-800 font-bold uppercase tracking-widest mt-1">Capture photos of the physical assets being loaned</p>
+                                </div>
+                             @endforelse
                          </div>
                     </div>
 

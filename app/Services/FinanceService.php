@@ -67,7 +67,11 @@ class FinanceService
         $totalRemaining = 0;
 
         foreach ($activeLoans as $loan) {
-            $totalPaid = $loan->repayments()->where('status', 'approved')->sum('amount');
+            if ($loan->relationLoaded('repayments')) {
+                $totalPaid = $loan->repayments->where('status', 'approved')->sum('amount');
+            } else {
+                $totalPaid = $loan->repayments()->where('status', 'approved')->sum('amount');
+            }
             $totalRemaining += max(0, $loan->total_repayment - $totalPaid);
         }
 
