@@ -31,125 +31,134 @@
                     <form action="{{ route('savings.store') }}" method="POST" id="transactionForm" class="space-y-8">
                         @csrf
                         
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-8">
-                            <!-- Member Selection -->
-                            <div class="col-span-1">
-                                <label for="member_id" class="block text-[10px] font-black text-emerald-600/70 uppercase tracking-[0.2em] mb-3">
-                                    <i class="fas fa-user-circle mr-2"></i>Select Member
-                                </label>
-                                <div class="relative group">
-                                    <select id="member_id" name="member_id" class="w-full pl-6 pr-12 py-4 bg-[#0E211A] border border-emerald-900/50 rounded-2xl focus:ring-2 focus:ring-gold/20 focus:border-gold/50 transition-all text-emerald-100 font-bold appearance-none cursor-pointer" required>
-                                        <option value="">Choose a member...</option>
-                                        @foreach($members as $member)
-                                            <option value="{{ $member->id }}" {{ old('member_id') == $member->id ? 'selected' : '' }}>
-                                                {{ $member->full_name }} ({{ $member->account_number ?? 'N/A' }})
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                    <div class="absolute right-6 top-1/2 -translate-y-1/2 pointer-events-none text-emerald-900 transition-colors group-hover:text-gold">
-                                        <i class="fas fa-chevron-down text-xs"></i>
-                                    </div>
-                                </div>
-                                <x-input-error :messages="$errors->get('member_id')" class="mt-2" />
-                            </div>
-
-                            <!-- Transaction Date -->
-                            <div class="col-span-1">
-                                <label for="transaction_date" class="block text-[10px] font-black text-emerald-600/70 uppercase tracking-[0.2em] mb-3">
-                                    <i class="fas fa-calendar-alt mr-2"></i>Transaction Date
-                                </label>
-                                <input id="transaction_date" type="date" name="transaction_date" value="{{ old('transaction_date', date('Y-m-d')) }}" 
-                                    class="w-full px-6 py-4 bg-[#0E211A] border border-emerald-900/50 rounded-2xl focus:ring-2 focus:ring-gold/20 focus:border-gold/50 transition-all text-emerald-100 font-bold focus:outline-none" required>
-                                <x-input-error :messages="$errors->get('transaction_date')" class="mt-2" />
-                            </div>
-
-                            <!-- Transaction Category -->
-                            <div class="col-span-1">
-                                <label for="category" class="block text-[10px] font-black text-emerald-600/70 uppercase tracking-[0.2em] mb-3">
-                                    <i class="fas fa-tags mr-2"></i>Transaction Category
-                                </label>
-                                <div class="relative group">
-                                    <select id="category" name="category" class="w-full pl-6 pr-12 py-4 bg-[#0E211A] border border-emerald-900/50 rounded-2xl focus:ring-2 focus:ring-gold/20 focus:border-gold/50 transition-all text-emerald-100 font-bold appearance-none cursor-pointer" required>
-                                        @foreach($categories as $category)
-                                            <option value="{{ $category }}" {{ old('category', $selectedCategory ?? '') == $category ? 'selected' : '' }}>
-                                                {{ $category }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                    <div class="absolute right-6 top-1/2 -translate-y-1/2 pointer-events-none text-emerald-900 group-hover:text-gold transition-colors">
-                                        <i class="fas fa-chevron-down text-xs"></i>
-                                    </div>
-                                </div>
-                                <x-input-error :messages="$errors->get('category')" class="mt-2" />
-                            </div>
-
-                            <!-- Transaction Type -->
-                            <div class="col-span-1">
-                                <label for="type" class="block text-[10px] font-black text-emerald-600/70 uppercase tracking-[0.2em] mb-3">
-                                    <i class="fas fa-exchange-alt mr-2"></i>Type of Transaction
-                                </label>
-                                <div class="grid grid-cols-2 gap-4">
-                                    <label class="relative cursor-pointer group">
-                                        <input type="radio" name="type" value="deposit" class="peer sr-only" {{ old('type', 'deposit') == 'deposit' ? 'checked' : '' }}>
-                                        <div class="flex flex-col items-center justify-center px-4 py-4 bg-[#0E211A] border-2 border-transparent rounded-2xl peer-checked:border-emerald-500 peer-checked:bg-emerald-950/30 text-emerald-600/50 peer-checked:text-emerald-400 hover:bg-emerald-900/20 transition-all">
-                                            <i class="fas fa-plus-circle mb-1 text-xl opacity-40 group-hover:opacity-100 transition-opacity"></i>
-                                            <span class="text-[9px] font-black uppercase tracking-widest">Deposit</span>
-                                        </div>
+                        <div class="space-y-6">
+                            <!-- Member & Date Pair -->
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                                <!-- Member Selection -->
+                                <div class="w-full">
+                                    <label for="member_id" class="block text-[10px] font-black text-emerald-600/70 uppercase tracking-[0.2em] mb-3">
+                                        <i class="fas fa-user-circle mr-2"></i>Select Member
                                     </label>
-
-                                    <label class="relative cursor-pointer group">
-                                        <input type="radio" name="type" value="withdrawal" class="peer sr-only" {{ old('type') == 'withdrawal' ? 'checked' : '' }}>
-                                        <div class="flex flex-col items-center justify-center px-4 py-4 bg-[#0E211A] border-2 border-transparent rounded-2xl peer-checked:border-red-500 peer-checked:bg-red-950/30 text-red-600/50 peer-checked:text-red-400 hover:bg-red-900/20 transition-all">
-                                            <i class="fas fa-minus-circle mb-1 text-xl opacity-40 group-hover:opacity-100 transition-opacity"></i>
-                                            <span class="text-[9px] font-black uppercase tracking-widest">Withdrawal</span>
+                                    <div class="relative group">
+                                        <select id="member_id" name="member_id" class="w-full pl-6 pr-12 py-4 bg-[#0E211A] border border-emerald-900/50 rounded-2xl focus:ring-2 focus:ring-gold/20 focus:border-gold/50 transition-all text-emerald-100 font-bold appearance-none cursor-pointer" required>
+                                            <option value="">Choose a member...</option>
+                                            @foreach($members as $member)
+                                                <option value="{{ $member->id }}" {{ old('member_id') == $member->id ? 'selected' : '' }}>
+                                                    {{ $member->full_name }} ({{ $member->account_number ?? 'N/A' }})
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                        <div class="absolute right-6 top-1/2 -translate-y-1/2 pointer-events-none text-emerald-900 transition-colors group-hover:text-gold">
+                                            <i class="fas fa-chevron-down text-xs"></i>
                                         </div>
+                                    </div>
+                                    <x-input-error :messages="$errors->get('member_id')" class="mt-2" />
+                                </div>
+
+                                <!-- Transaction Date -->
+                                <div class="w-full">
+                                    <label for="transaction_date" class="block text-[10px] font-black text-emerald-600/70 uppercase tracking-[0.2em] mb-3">
+                                        <i class="fas fa-calendar-alt mr-2"></i>Transaction Date
                                     </label>
+                                    <input id="transaction_date" type="date" name="transaction_date" value="{{ old('transaction_date', date('Y-m-d')) }}" 
+                                        class="w-full px-6 py-4 bg-[#0E211A] border border-emerald-900/50 rounded-2xl focus:ring-2 focus:ring-gold/20 focus:border-gold/50 transition-all text-emerald-100 font-bold focus:outline-none" required>
+                                    <x-input-error :messages="$errors->get('transaction_date')" class="mt-2" />
                                 </div>
-                                <x-input-error :messages="$errors->get('type')" class="mt-2" />
                             </div>
 
-                            <!-- Amount -->
-                            <div class="col-span-1">
-                                <label for="amount" class="block text-[10px] font-black text-emerald-600/70 uppercase tracking-[0.2em] mb-3">
-                                    <i class="fas fa-naira-sign mr-2"></i>Amount
-                                </label>
-                                <div class="relative group">
-                                    <div class="absolute left-6 top-1/2 -translate-y-1/2 text-emerald-600/70 group-focus-within:text-gold transition-colors font-black text-xl pointer-events-none">₦</div>
-                                    <input id="amount" type="text" name="amount" value="{{ old('amount') }}" 
-                                        inputmode="numeric"
-                                        oninput="
-                                            let val = this.value.replace(/[^0-9.]/g, '');
-                                            if (val.split('.').length > 2) val = val.replace(/\.+$/, '');
-                                            let parts = val.split('.');
-                                            parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-                                            this.value = parts.join('.');
-                                        "
-                                        onblur="
-                                            let val = this.value.replace(/,/g, '');
-                                            if (val && !isNaN(val)) {
-                                                this.value = parseFloat(val).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
-                                            }
-                                        "
-                                        class="w-full pl-14 pr-6 py-4 bg-[#0E211A] border border-emerald-900/50 rounded-2xl focus:ring-2 focus:ring-gold/20 focus:border-gold/50 transition-all text-emerald-400 font-black text-2xl tracking-tight focus:outline-none placeholder-emerald-900/50" 
-                                        placeholder="0,000.00" required>
+                            <!-- Category & Type Pair -->
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                                <!-- Transaction Category -->
+                                <div class="w-full">
+                                    <label for="category" class="block text-[10px] font-black text-emerald-600/70 uppercase tracking-[0.2em] mb-3">
+                                        <i class="fas fa-tags mr-2"></i>Transaction Category
+                                    </label>
+                                    <div class="relative group">
+                                        <select id="category" name="category" class="w-full pl-6 pr-12 py-4 bg-[#0E211A] border border-emerald-900/50 rounded-2xl focus:ring-2 focus:ring-gold/20 focus:border-gold/50 transition-all text-emerald-100 font-bold appearance-none cursor-pointer" required>
+                                            @foreach($categories as $category)
+                                                <option value="{{ $category }}" {{ old('category', $selectedCategory ?? '') == $category ? 'selected' : '' }}>
+                                                    {{ $category }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                        <div class="absolute right-6 top-1/2 -translate-y-1/2 pointer-events-none text-emerald-900 group-hover:text-gold transition-colors">
+                                            <i class="fas fa-chevron-down text-xs"></i>
+                                        </div>
+                                    </div>
+                                    <x-input-error :messages="$errors->get('category')" class="mt-2" />
                                 </div>
-                                <x-input-error :messages="$errors->get('amount')" class="mt-2" />
+
+                                <!-- Transaction Type -->
+                                <div class="w-full">
+                                    <label for="type" class="block text-[10px] font-black text-emerald-600/70 uppercase tracking-[0.2em] mb-3">
+                                        <i class="fas fa-exchange-alt mr-2"></i>Type of Transaction
+                                    </label>
+                                    <div class="grid grid-cols-2 gap-4">
+                                        <label class="relative cursor-pointer group">
+                                            <input type="radio" name="type" value="deposit" class="peer sr-only" {{ old('type', 'deposit') == 'deposit' ? 'checked' : '' }}>
+                                            <div class="flex flex-col items-center justify-center px-4 py-3 bg-[#0E211A] border-2 border-transparent rounded-2xl peer-checked:border-emerald-500 peer-checked:bg-emerald-950/30 text-emerald-600/50 peer-checked:text-emerald-400 hover:bg-emerald-900/20 transition-all">
+                                                <i class="fas fa-plus-circle mb-1 text-base opacity-40 group-hover:opacity-100 transition-opacity"></i>
+                                                <span class="text-[9px] font-black uppercase tracking-widest">Deposit</span>
+                                            </div>
+                                        </label>
+
+                                        <label class="relative cursor-pointer group">
+                                            <input type="radio" name="type" value="withdrawal" class="peer sr-only" {{ old('type') == 'withdrawal' ? 'checked' : '' }}>
+                                            <div class="flex flex-col items-center justify-center px-4 py-3 bg-[#0E211A] border-2 border-transparent rounded-2xl peer-checked:border-red-500 peer-checked:bg-red-950/30 text-red-600/50 peer-checked:text-red-400 hover:bg-red-900/20 transition-all">
+                                                <i class="fas fa-minus-circle mb-1 text-base opacity-40 group-hover:opacity-100 transition-opacity"></i>
+                                                <span class="text-[9px] font-black uppercase tracking-widest">Withdrawal</span>
+                                            </div>
+                                        </label>
+                                    </div>
+                                    <x-input-error :messages="$errors->get('type')" class="mt-2" />
+                                </div>
                             </div>
 
-                            <!-- Reference -->
-                            <div class="col-span-1">
-                                <label for="reference" class="block text-[10px] font-black text-emerald-600/70 uppercase tracking-[0.2em] mb-3">
-                                    <i class="fas fa-fingerprint mr-2"></i>Reference / Slip No.
-                                </label>
-                                <div class="relative">
-                                    <input id="reference" type="text" name="reference" value="{{ old('reference') }}" placeholder="e.g. TR-2024-001"
-                                        class="w-full px-6 py-4 bg-[#0E211A] border border-emerald-900/50 rounded-2xl focus:ring-2 focus:ring-gold/20 focus:border-gold/50 transition-all text-emerald-100 font-bold focus:outline-none placeholder-emerald-900/50">
+                            <!-- Amount & Reference Pair -->
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                                <!-- Amount -->
+                                <div class="w-full">
+                                    <label for="amount" class="block text-[10px] font-black text-emerald-600/70 uppercase tracking-[0.2em] mb-3">
+                                        <i class="fas fa-naira-sign mr-2"></i>Amount
+                                    </label>
+                                    <div class="relative group">
+                                        <div class="absolute left-6 top-1/2 -translate-y-1/2 text-emerald-600/70 group-focus-within:text-gold transition-colors font-black text-2xl pointer-events-none">₦</div>
+                                        <input id="amount" type="text" name="amount" value="{{ old('amount') }}" 
+                                            inputmode="numeric"
+                                            oninput="
+                                                let val = this.value.replace(/[^0-9.]/g, '');
+                                                if (val.split('.').length > 2) val = val.replace(/\.+$/, '');
+                                                let parts = val.split('.');
+                                                parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                                                this.value = parts.join('.');
+                                            "
+                                            onblur="
+                                                let amountVal = this.value.replace(/,/g, '');
+                                                if (amountVal && !isNaN(amountVal)) {
+                                                    this.value = parseFloat(amountVal).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+                                                }
+                                            "
+                                            class="w-full pl-14 pr-6 py-4 bg-[#0E211A] border border-emerald-900/50 rounded-2xl focus:ring-2 focus:ring-gold/20 focus:border-gold/50 transition-all text-emerald-400 font-black text-2xl tracking-tight focus:outline-none placeholder-emerald-900/50" 
+                                            placeholder="0,000.00" required>
+                                    </div>
+                                    <x-input-error :messages="$errors->get('amount')" class="mt-2" />
                                 </div>
-                                <x-input-error :messages="$errors->get('reference')" class="mt-2" />
+
+                                <!-- Reference -->
+                                <div class="w-full">
+                                    <label for="reference" class="block text-[10px] font-black text-emerald-600/70 uppercase tracking-[0.2em] mb-3">
+                                        <i class="fas fa-fingerprint mr-2"></i>Reference / Slip No.
+                                    </label>
+                                    <div class="relative">
+                                        <input id="reference" type="text" name="reference" value="{{ old('reference') }}" placeholder="e.g. TR-2024-001"
+                                            class="w-full px-6 py-4 bg-[#0E211A] border border-emerald-900/50 rounded-2xl focus:ring-2 focus:ring-gold/20 focus:border-gold/50 transition-all text-emerald-100 font-bold focus:outline-none placeholder-emerald-900/50">
+                                    </div>
+                                    <x-input-error :messages="$errors->get('reference')" class="mt-2" />
+                                </div>
                             </div>
 
                             <!-- Notes -->
-                            <div class="col-span-2">
+                            <div class="w-full">
                                 <label for="notes" class="block text-[10px] font-black text-emerald-600/70 uppercase tracking-[0.2em] mb-3">
                                     <i class="fas fa-comment-dots mr-2"></i>Notes / Description
                                 </label>
@@ -190,7 +199,7 @@
                                 <i class="fas fa-arrow-left"></i>
                                 Cancel Entry
                             </a>
-                            <button type="submit" class="bg-gradient-to-r from-emerald-600 to-emerald-800 hover:from-emerald-500 hover:to-emerald-700 text-white font-black py-4 px-12 rounded-[2rem] shadow-xl shadow-emerald-900/30 hover:shadow-emerald-500/30 hover:-translate-y-1 transition-all active:scale-95 flex items-center justify-center gap-3 uppercase tracking-widest text-[10px]">
+                            <button type="submit" class="w-full sm:w-auto bg-gradient-to-r from-emerald-600 to-emerald-800 hover:from-emerald-500 hover:to-emerald-700 text-white font-black py-4 px-12 rounded-[2rem] shadow-xl shadow-emerald-900/30 hover:shadow-emerald-500/30 hover:-translate-y-1 transition-all active:scale-95 flex items-center justify-center gap-3 uppercase tracking-widest text-[10px]">
                                 <i class="fas fa-save"></i>
                                 Record Transaction
                             </button>
@@ -230,4 +239,4 @@
             });
         });
     </script>
-</x-app-layout>t>
+</x-app-layout>

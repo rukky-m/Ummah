@@ -15,21 +15,81 @@
         <!-- Font Awesome -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
+        <!-- PWA Meta Tags -->
+        <meta name="theme-color" content="#053123">
+        <link rel="manifest" href="/manifest.json">
+        <link rel="apple-touch-icon" href="{{ asset('images/pwa_icon_192.png') }}">
+
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
 
         <style>
             .bg-logo-pattern {
-                background-image: url("{{ asset('images/logo-transparent.png') }}");
-                background-repeat: repeat;
-                background-size: 80px;
-                background-position: center;
-                opacity: 0.02;
+                background-color: transparent;
+                background-image: radial-gradient(#10b981 0.5px, transparent 0.5px);
+                background-size: 40px 40px;
+                opacity: 0.1;
                 pointer-events: none;
+                position: absolute;
+                inset: 0;
             }
         </style>
     </head>
-    <body class="font-sans antialiased bg-dark-bg text-white selection:bg-army-green selection:text-white transition-colors duration-300">
+    <body class="font-sans antialiased bg-dark-bg text-white selection:bg-army-green selection:text-white transition-colors duration-300"
+          x-data="{ showPwaPrompt: false, showContributionRules: false }"
+          @show-pwa-prompt.window="showPwaPrompt = true"
+          @hide-pwa-prompt.window="showPwaPrompt = false">
+        
+        {{-- PWA Installation Popup --}}
+        <div x-show="showPwaPrompt" 
+             style="display: none;"
+             class="fixed inset-0 z-[200] flex items-end sm:items-center justify-center p-4 sm:p-6 pointer-events-none">
+            <div x-show="showPwaPrompt"
+                 x-transition:enter="transition ease-out duration-300"
+                 x-transition:enter-start="opacity-0 translate-y-8 sm:scale-95"
+                 x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
+                 x-transition:leave="transition ease-in duration-200"
+                 x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
+                 x-transition:leave-end="opacity-0 translate-y-8 sm:scale-95"
+                 class="w-full max-w-sm bg-dark-surface border border-dark-border rounded-3xl shadow-2xl pointer-events-auto overflow-hidden">
+                
+                <div class="relative p-6">
+                    {{-- Close Button --}}
+                    <button @click="window.dismissPWA(false)" class="absolute top-4 right-4 text-gray-500 hover:text-white transition-colors">
+                        <i class="fas fa-times"></i>
+                    </button>
+
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="w-16 h-16 rounded-2xl bg-army-green/10 flex items-center justify-center text-army-green border border-army-green/20 overflow-hidden">
+                            <img src="{{ asset('images/pwa_icon_192.png') }}" alt="App Icon" class="w-full h-full object-cover">
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-black text-white leading-tight">Install Ummah App</h3>
+                            <p class="text-xs text-emerald-100/60">Access your cooperative secretariate faster from your home screen.</p>
+                        </div>
+                    </div>
+
+                    <div class="space-y-3">
+                        <button @click="window.installPWA()" 
+                                class="w-full py-3.5 bg-army-green hover:bg-emerald-600 text-white font-black uppercase tracking-widest text-xs rounded-xl transition-all shadow-lg shadow-army-green/20 flex items-center justify-center gap-2">
+                            <i class="fas fa-download"></i>
+                            <span>Install Now</span>
+                        </button>
+                        
+                        <div class="flex gap-2">
+                             <button @click="window.dismissPWA(false)" 
+                                    class="flex-1 py-3 bg-dark-bg text-gray-400 font-bold uppercase tracking-widest text-[10px] rounded-xl border border-dark-border hover:bg-dark-border transition">
+                                Not Now
+                            </button>
+                            <button @click="if(confirm('This will stop the install prompt from appearing. You can still install the app from your Profile page later. Continue?')) { window.dismissPWA(true); }" 
+                                    class="flex-1 py-3 bg-dark-bg text-red-500/50 hover:text-red-500 font-bold uppercase tracking-widest text-[10px] rounded-xl border border-dark-border hover:bg-dark-border transition">
+                                Don't Install
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="min-h-screen bg-dark-bg relative overflow-hidden transition-colors duration-300">
             <!-- Background Logo Pattern Overlay -->
             <div class="absolute inset-0 bg-logo-pattern"></div>
@@ -105,14 +165,14 @@
                         @endif
 
                         {{-- FLOATING + BUTTON (center) --}}
-                        <div class="flex flex-col items-center justify-center relative" style="margin-top:-24px">
+                        <div class="flex flex-col items-center justify-center relative" style="margin-top:-28px">
                             <button @click="servicesOpen = true"
-                                class="w-14 h-14 rounded-full bg-army-green text-white flex items-center justify-center shadow-xl shadow-army-green/30 active:scale-90 transition-all border-4 border-white"
+                                class="w-14 h-14 rounded-full bg-army-green text-white flex items-center justify-center shadow-2xl shadow-army-green/40 active:scale-95 transition-all border-4 border-dark-surface"
                                 :class="servicesOpen ? 'rotate-45' : 'rotate-0'"
-                                style="transition: transform 0.2s ease">
+                                style="transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)">
                                 <i class="fas fa-plus text-xl"></i>
                             </button>
-                            <span class="text-[9px] font-black uppercase tracking-widest text-gray-400 mt-1">More</span>
+                            <span class="text-[8px] font-black uppercase tracking-[0.2em] text-emerald-100/40 mt-1.5 transition-opacity" :class="servicesOpen ? 'opacity-0' : 'opacity-100'">More</span>
                         </div>
 
                         @if(Auth::user()->isStaff())

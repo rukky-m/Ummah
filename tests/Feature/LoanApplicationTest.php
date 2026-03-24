@@ -26,6 +26,9 @@ class LoanApplicationTest extends TestCase
             'purpose' => 'Business',
             'duration_months' => 12,
             'repayment_frequency' => 'monthly',
+            'bank_name' => 'Test Bank',
+            'account_number' => '1234567890',
+            'account_name' => 'Test Account',
         ]);
 
         $response->assertRedirect(route('loans.apply.step2'));
@@ -36,9 +39,11 @@ class LoanApplicationTest extends TestCase
             'guarantor_1_name' => 'Guarantor One',
             'guarantor_1_relationship' => 'Friend',
             'guarantor_1_phone' => '08011111111',
+            'guarantor_1_passport' => \Illuminate\Http\UploadedFile::fake()->create('passport1.jpg', 100, 'image/jpeg'),
             'guarantor_2_name' => 'Guarantor Two',
             'guarantor_2_relationship' => 'Colleague',
             'guarantor_2_phone' => '08022222222',
+            'guarantor_2_passport' => \Illuminate\Http\UploadedFile::fake()->create('passport2.jpg', 100, 'image/jpeg'),
         ]);
 
         $response->assertRedirect(route('loans.apply.step3'));

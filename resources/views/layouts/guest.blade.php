@@ -20,13 +20,13 @@
 
         <style>
             .bg-logo-pattern {
-                background-color: #f9fafb;
-                background-image: url("{{ asset('images/logo-transparent.png') }}");
-                background-repeat: repeat;
-                background-size: 80px;
-                background-position: center;
-                opacity: 0.04;
+                background-color: transparent;
+                background-image: radial-gradient(#10b981 0.5px, transparent 0.5px);
+                background-size: 40px 40px;
+                opacity: 0.1;
                 pointer-events: none;
+                position: absolute;
+                inset: 0;
             }
         </style>
     </head>

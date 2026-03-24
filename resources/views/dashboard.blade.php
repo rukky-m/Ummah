@@ -76,7 +76,7 @@
         </div>
     </x-slot>
 
-    <div class="py-12" x-data="{ showContributionRules: false }" @open-contribution-rules.window="showContributionRules = true">
+    <div class="py-6 sm:py-12" x-data="{ showContributionRules: false }" @open-contribution-rules.window="showContributionRules = true">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
             
             @if(!Auth::user()->isStaff() && Auth::user()->member)
@@ -391,9 +391,7 @@
                                     </a>
                                     <a href="{{ route('admin.loan-products.index', ['category' => 'motorcycle']) }}" class="grid place-items-center content-center p-4 bg-blue-500/10 rounded-2xl border border-blue-500/20 hover:bg-gold hover:border-gold hover:text-white transition-all duration-300 group text-center hover:shadow-xl hover:-translate-y-1">
                                         <i class="fas fa-motorcycle mb-2 text-xl text-blue-400 group-hover:text-white transition"></i>
-                                        <span class="font-black text-[9px] text-white uppercase tracking-tight">Post Motorcycles</span>
-                                    </a>
-                                    </a>
+                                        </a>
                                 </div>
                             @endcan
                             @if(Auth::user()->isAdmin() && !Auth::user()->canManageAnnouncements())
@@ -463,7 +461,6 @@
                                     <a href="{{ route('cashbook.index') }}" class="block text-center text-xs font-black uppercase tracking-widest text-emerald-400 hover:text-emerald-300 mt-6 transition">
                                         View Full Cashbook
                                         <i class="fas fa-arrow-right ml-2 text-[8px]"></i>
-                                    </a>
                                     </a>
                                 </div>
                             @endif
@@ -792,7 +789,7 @@
                 
             @endif
         </div>
-    </div>
+    
 
     <!-- Contribution Rules Modal -->
     <div x-show="showContributionRules" 
@@ -889,7 +886,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
         </div>
     </div>
+</div>
 </x-app-layout>

@@ -170,7 +170,7 @@
                     @endif
                 </div>
 
-                <div class="overflow-x-auto">
+                <div class="hidden sm:block overflow-x-auto">
                     <table class="w-full text-left border-collapse">
                         <thead>
                             <tr class="bg-emerald-900/10">
@@ -235,7 +235,7 @@
                                         </span>
                                     </td>
                                     <td class="px-6 py-5 whitespace-nowrap text-right">
-                                        <div class="flex items-center justify-end gap-2">
+                                        <div class="flex items-center justify-end gap-2 text-right">
                                             @if(auth()->user()->member && in_array($loan->status, ['approved', 'disbursed']))
                                                 <button type="button" 
                                                     @click="$dispatch('open-modal', 'repayment-modal'); 
@@ -272,6 +272,71 @@
                             @endforelse
                         </tbody>
                     </table>
+                </div>
+
+                {{-- Mobile View: Cards --}}
+                <div class="block sm:hidden divide-y divide-emerald-900/30">
+                    @forelse($loans as $loan)
+                        <div class="p-6 space-y-4 hover:bg-[#0E211A] transition active:scale-[0.98]">
+                            <div class="flex justify-between items-start">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 rounded-xl bg-gold/10 text-gold flex items-center justify-center font-bold text-sm overflow-hidden border border-gold/20">
+                                        @if($loan->member->user?->profile_photo_path)
+                                            <img src="{{ asset('storage/' . $loan->member->user->profile_photo_path) }}" class="w-full h-full object-cover">
+                                        @elseif($loan->member->passport_photo_path)
+                                            <img src="{{ asset('storage/' . $loan->member->passport_photo_path) }}" class="w-full h-full object-cover">
+                                        @else
+                                            {{ substr($loan->member->full_name, 0, 1) }}
+                                        @endif
+                                    </div>
+                                    <div class="flex flex-col">
+                                        <span class="text-sm font-black text-emerald-100">{{ $loan->member->full_name }}</span>
+                                        <span class="text-[10px] text-emerald-500/60 uppercase font-black">#LN-{{ str_pad($loan->id, 5, '0', STR_PAD_LEFT) }}</span>
+                                    </div>
+                                </div>
+                                <span class="px-3 py-1 text-[9px] font-black uppercase tracking-widest rounded-full border {{ $statusClasses[$loan->status] ?? 'bg-emerald-900/30 text-emerald-500/70 border-emerald-800' }}">
+                                    {{ $loan->status }}
+                                </span>
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-4 bg-dark-bg/30 p-4 rounded-2xl border border-emerald-900/20">
+                                <div>
+                                    <p class="text-[9px] font-black text-emerald-600/70 uppercase tracking-widest mb-1">Principal</p>
+                                    <p class="text-sm font-black text-white">₦{{ number_format($loan->amount, 0) }}</p>
+                                </div>
+                                <div>
+                                    <p class="text-[9px] font-black text-emerald-600/70 uppercase tracking-widest mb-1">Monthlies</p>
+                                    <p class="text-sm font-black text-emerald-400">₦{{ number_format($loan->monthlyRepaymentAmount(), 2) }}</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center justify-between pt-2">
+                                <span class="text-[10px] text-emerald-500/40 font-bold italic">{{ $loan->created_at->format('d M Y') }}</span>
+                                <div class="flex gap-2">
+                                    @if(auth()->user()->member && in_array($loan->status, ['approved', 'disbursed']))
+                                        <button type="button" 
+                                            @click="$dispatch('open-modal', 'repayment-modal'); 
+                                                    selectedLoanId = {{ $loan->id }}; 
+                                                    selectedLoanAmount = '{{ number_format($loan->monthlyRepaymentAmount(), 2, '.', '') }}';
+                                                    selectedLoanNumber = '{{ $loan->application_number }}';
+                                                    selectedLoanPurpose = '{{ $loan->purpose }}';
+                                                    selectedLoanPrincipal = '{{ number_format($loan->amount, 0) }}';"
+                                            class="p-2.5 bg-gold/10 border border-gold/20 text-gold rounded-xl">
+                                            <i class="fas fa-hand-holding-usd"></i>
+                                        </button>
+                                    @endif
+                                    <a href="{{ route('loans.show', $loan) }}" class="p-2.5 bg-emerald-900/30 border border-emerald-800/50 text-emerald-400 rounded-xl">
+                                        <i class="fas fa-chevron-right"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    @empty
+                        <div class="p-12 text-center">
+                            <i class="fas fa-envelope-open-text text-3xl text-emerald-900/50 mb-4"></i>
+                            <p class="text-emerald-600/70 font-medium">No loans found</p>
+                        </div>
+                    @endforelse
                 </div>
 
                 @if($loans->hasPages())
