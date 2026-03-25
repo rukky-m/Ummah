@@ -32,7 +32,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse($repayments as $repayment)
+                                @forelse ($repayments as $repayment)
                                     <tr class="bg-white/40 dark:bg-gray-800/40 hover:bg-white/60 dark:hover:bg-gray-800/60 backdrop-blur-md transition-all duration-300 group shadow-sm hover:shadow-md">
                                         <td class="px-6 py-5 rounded-l-2xl border-y border-l border-gray-900/5 dark:border-white/5">
                                             <span class="text-xs font-bold text-gray-500">{{ $repayment->created_at->format('d M Y') }}</span>

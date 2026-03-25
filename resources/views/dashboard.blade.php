@@ -64,12 +64,9 @@
             {{-- Notification Bell --}}
             <a href="{{ url('/notifications') }}" class="relative w-10 h-10 rounded-full bg-dark-surface border border-dark-border shadow-sm flex items-center justify-center text-emerald-100/60 hover:text-gold transition-colors active:scale-95">
                 <i class="fas fa-bell text-base"></i>
-                @php
-                    $unreadCount = Auth::user()->notifications()->whereNull('read_at')->count();
-                @endphp
-                @if($unreadCount > 0)
+                @if(($unread = $unreadNotificationsCount ?? 0) > 0)
                     <span class="absolute -top-0.5 -right-0.5 w-4 h-4 bg-red-500 text-white text-[9px] font-black rounded-full flex items-center justify-center">
-                        {{ $unreadCount > 9 ? '9+' : $unreadCount }}
+                        {{ $unread > 9 ? '9+' : $unread }}
                     </span>
                 @endif
             </a>

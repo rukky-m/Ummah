@@ -121,7 +121,7 @@
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-emerald-900/30 bg-transparent">
-                            @forelse($announcements as $announcement)
+                            @forelse ($announcements as $announcement)
                                 <tr class="hover:bg-[#0B1A14]/80 transition-colors group">
                                     <td class="px-8 py-6">
                                         <p class="font-bold text-white text-base tracking-tight mb-2 group-hover:text-emerald-300 transition-colors">{{ $announcement->title }}</p>

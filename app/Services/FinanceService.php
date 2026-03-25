@@ -22,10 +22,12 @@ class FinanceService
             $query->where('transaction_date', '<', $upToDate);
         }
 
-        $deposits = (clone $query)->where('type', 'deposit')->sum('amount');
-        $withdrawals = (clone $query)->where('type', 'withdrawal')->sum('amount');
+        $balance = $query->selectRaw(
+            'COALESCE(SUM(CASE WHEN type = ? THEN amount ELSE 0 END), 0) - COALESCE(SUM(CASE WHEN type = ? THEN amount ELSE 0 END), 0) as balance',
+            ['deposit', 'withdrawal']
+        )->value('balance');
 
-        return (float) ($deposits - $withdrawals);
+        return (float) $balance;
     }
 
     /**
@@ -83,7 +85,10 @@ class FinanceService
      */
     public function getGlobalActiveLoansBalance(): float
     {
-        return (float) (Loan::query()->where('status', 'approved')->orWhere('status', 'disbursed')->sum('total_repayment') - \App\Models\Repayment::query()->where('status', '=', 'approved')->sum('amount'));
+        $principal = (float) Loan::query()->whereIn('status', ['approved', 'disbursed'])->sum('total_repayment');
+        $repaid = (float) \App\Models\Repayment::query()->where('status', 'approved')->sum('amount');
+
+        return (float) ($principal - $repaid);
     }
 
     /**
@@ -91,9 +96,16 @@ class FinanceService
      */
     public function getGlobalSavingsBalance(): float
     {
-        $deposits = Saving::query()->where('category', '=', 'Personal Savings')->where('status', '=', 'approved')->where('type', '=', 'deposit')->sum('amount');
-        $withdrawals = Saving::query()->where('category', '=', 'Personal Savings')->where('status', '=', 'approved')->where('type', '=', 'withdrawal')->sum('amount');
-        return (float) ($deposits - $withdrawals);
+        $balance = Saving::query()
+            ->where('category', 'Personal Savings')
+            ->where('status', 'approved')
+            ->selectRaw(
+                'COALESCE(SUM(CASE WHEN type = ? THEN amount ELSE 0 END), 0) - COALESCE(SUM(CASE WHEN type = ? THEN amount ELSE 0 END), 0) as balance',
+                ['deposit', 'withdrawal']
+            )
+            ->value('balance');
+
+        return (float) $balance;
     }
 
     /**

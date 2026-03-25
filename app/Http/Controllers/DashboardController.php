@@ -25,7 +25,9 @@ class DashboardController extends Controller
     public function index()
     {
         $user = Auth::user();
+        $user->loadMissing('member');
         $announcements = Announcement::active()->latest()->get();
+        $unreadNotificationsCount = $user->unreadNotifications()->count();
 
         if ($user->isStaff()) {
             // PRO (Admin 6) only manages announcements, skip heavy stats
@@ -33,7 +35,8 @@ class DashboardController extends Controller
                 return view('dashboard', [
                     'data' => [],
                     'globalMonthlySummary' => collect(),
-                    'announcements' => $announcements
+                    'announcements' => $announcements,
+                    'unreadNotificationsCount' => $unreadNotificationsCount,
                 ]);
             }
 
@@ -45,13 +48,18 @@ class DashboardController extends Controller
                 'pending_loans' => Loan::where('status', 'pending')->count(),
             ];
 
-            // Cashbook Stats for Current Month
+            // Cashbook Stats for Current Month (aggregate in SQL — avoid loading every row)
             $startOfMonth = now()->startOfMonth();
             $endOfMonth = now()->endOfMonth();
-            
-            $transactions = CashbookTransaction::whereBetween('transaction_date', [$startOfMonth, $endOfMonth])->get();
-            $data['monthly_income'] = $transactions->where('type', 'income')->sum('amount');
-            $data['monthly_expense'] = $transactions->where('type', 'expense')->sum('amount');
+
+            $data['monthly_income'] = (float) CashbookTransaction::query()
+                ->whereBetween('transaction_date', [$startOfMonth, $endOfMonth])
+                ->where('type', 'income')
+                ->sum('amount');
+            $data['monthly_expense'] = (float) CashbookTransaction::query()
+                ->whereBetween('transaction_date', [$startOfMonth, $endOfMonth])
+                ->where('type', 'expense')
+                ->sum('amount');
             
             // Opening Balance (All before this month)
             $prevIncome = CashbookTransaction::where('type', 'income')->where('transaction_date', '<', $startOfMonth)->sum('amount');
@@ -70,7 +78,7 @@ class DashboardController extends Controller
                 ->take(6)
                 ->pluck('total_amount', 'month_name');
 
-            return view('dashboard', compact('data', 'globalMonthlySummary', 'announcements'));
+            return view('dashboard', compact('data', 'globalMonthlySummary', 'announcements', 'unreadNotificationsCount'));
         }
 
         // Member Dashboard
@@ -152,7 +160,7 @@ class DashboardController extends Controller
         // Member Balances
         $startOfCurrentMonth = now()->startOfMonth();
         
-        // Use FinanceService for balance calculations
+        // Savings: one “as of now” query, one “opening of month” query (avoid duplicate full-balance queries)
         $openingBalance = $this->financeService->getMemberSavingsBalance($member, $startOfCurrentMonth);
         $closingBalance = $this->financeService->getMemberSavingsBalance($member);
 
@@ -167,19 +175,19 @@ class DashboardController extends Controller
             ->pluck('total_amount', 'month_name');
 
         $data = [
-            'my_savings' => $this->financeService->getMemberSavingsBalance($member),
+            'my_savings' => $closingBalance,
             'my_contributions' => $this->financeService->getMemberTotalContributions($member),
             'opening_balance' => $openingBalance,
             'closing_balance' => $closingBalance,
             'active_loans_count' => $activeLoans->count(),
-            'active_loans_balance' => $this->financeService->getMemberActiveLoansBalance($member),
+            'active_loans_balance' => $totalRemainingBalance,
             'next_payment_amount' => $nextPaymentAmount,
             'next_payment_date' => now()->addMonth()->format('M d, Y'),
             'overdue_repayments' => $overdueRepayments,
-            'loans' => $member->loans()->latest()->get(),
+            'loans' => $member->loans()->with('committeeApprovals')->latest()->take(1)->get(),
         ];
 
-        return view('dashboard', compact('data', 'recentActivity', 'monthlyContributions', 'announcements'));
+        return view('dashboard', compact('data', 'recentActivity', 'monthlyContributions', 'announcements', 'unreadNotificationsCount'));
     }
 
     public function committeeDashboard()
@@ -242,11 +250,15 @@ class DashboardController extends Controller
             ];
         }
 
-        // Overall loan statistics
-        $totalPending = Loan::where('status', 'pending')->count();
-        $totalApproved = Loan::where('status', 'approved')->count();
-        $totalRejected = Loan::where('status', 'rejected')->count();
-        $totalDisbursed = Loan::where('status', 'disbursed')->count();
+        // Overall loan statistics (single grouped query)
+        $loanStatusCounts = Loan::query()
+            ->selectRaw('status, COUNT(*) as c')
+            ->groupBy('status')
+            ->pluck('c', 'status');
+        $totalPending = (int) ($loanStatusCounts['pending'] ?? 0);
+        $totalApproved = (int) ($loanStatusCounts['approved'] ?? 0);
+        $totalRejected = (int) ($loanStatusCounts['rejected'] ?? 0);
+        $totalDisbursed = (int) ($loanStatusCounts['disbursed'] ?? 0);
 
         return view('admin.committee_dashboard', compact('stats', 'totalPending', 'totalApproved', 'totalRejected', 'totalDisbursed'));
     }
