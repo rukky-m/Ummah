@@ -56,7 +56,7 @@
             <input id="email" name="email" type="email" class="w-full px-5 py-3 bg-[#0B1A14] border border-emerald-900/50 rounded-2xl focus:ring-2 focus:ring-gold/20 focus:border-gold/50 text-sm font-bold text-emerald-100 transition-all focus:outline-none" value="{{ old('email', $user->email) }}" required autocomplete="username" />
             <x-input-error class="mt-2" :messages="$errors->get('email')" />
 
-            @if ($user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && ! $user->hasVerifiedEmail())
+            @if($user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && ! $user->hasVerifiedEmail())
                 <div>
                     <p class="text-sm mt-2 text-gold font-bold">
                         {{ __('Your email address is unverified.') }}
@@ -66,7 +66,7 @@
                         </button>
                     </p>
 
-                    @if (session('status') === 'verification-link-sent')
+                    @if(session('status') === 'verification-link-sent')
                         <p class="mt-2 font-bold text-sm text-emerald-500">
                             {{ __('A new verification link has been sent to your email address.') }}
                         </p>
@@ -80,7 +80,7 @@
                 {{ __('Save Changes') }}
             </button>
 
-            @if (session('status') === 'profile-updated')
+            @if(session('status') === 'profile-updated')
                 <p
                     x-data="{ show: true }"
                     x-show="show"

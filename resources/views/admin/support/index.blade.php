@@ -33,7 +33,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse ($tickets as $ticket)
+                                @forelse($tickets as $ticket)
                                     <tr class="bg-white/40 dark:bg-gray-800/40 hover:bg-white/60 dark:hover:bg-gray-800/60 backdrop-blur-md transition-all duration-300 group shadow-sm hover:shadow-md">
                                         <td class="px-6 py-5 rounded-l-2xl border-y border-l border-gray-900/5 dark:border-white/5">
                                             <span class="text-[10px] font-black tracking-widest text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-500/10 px-2 py-1 rounded-md uppercase">#{{ str_pad($ticket->id, 5, '0', STR_PAD_LEFT) }}</span>
