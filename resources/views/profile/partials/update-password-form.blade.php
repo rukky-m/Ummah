@@ -26,7 +26,7 @@
                 {{ __('Update Password') }}
             </button>
 
-            @if (session('status') === 'password-updated')
+            @if(session('status') === 'password-updated')
                 <p
                     x-data="{ show: true }"
                     x-show="show"

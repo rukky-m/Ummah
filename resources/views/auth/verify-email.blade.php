@@ -11,7 +11,7 @@
         {{ __('Thanks for signing up! Before getting started, could you verify your email address by clicking on the link we just emailed to you? If you didn\'t receive the email, we will gladly send you another.') }}
     </div>
 
-    @if (session('status') == 'verification-link-sent')
+    @if(session('status') == 'verification-link-sent')
         <div class="mb-8 py-4 px-6 bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-100 dark:border-emerald-500/20 rounded-2xl font-bold text-xs text-emerald-600 dark:text-emerald-400 text-center uppercase tracking-widest animate-pulse-slow">
             {{ __('A new verification link has been sent to the email address you provided during registration.') }}
         </div>

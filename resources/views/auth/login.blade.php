@@ -51,7 +51,7 @@
         <div class="group">
             <div class="flex justify-between items-center mb-2 px-1">
                 <x-input-label for="password" :value="__('Password')" class="text-xs font-black uppercase tracking-widest text-gray-400 group-focus-within:text-emerald-500 transition-colors" />
-                @if (Route::has('password.request'))
+                @if(Route::has('password.request'))
                     <a class="text-[10px] font-black text-gray-300 hover:text-emerald-500 uppercase tracking-widest transition-colors" href="{{ route('password.request') }}">
                         {{ __('Forgot?') }}
                     </a>
